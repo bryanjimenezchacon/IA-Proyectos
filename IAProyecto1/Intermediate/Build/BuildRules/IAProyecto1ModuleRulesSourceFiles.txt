@@ -1,0 +1,4 @@
+W:\UE4\IAProyecto1\Source\Sphinx_UE4_Demo\Sphinx_UE4_Demo.Build.cs
+W:\UE4\IAProyecto1\Plugins\SpeechRecognition\Source\SpeechRecognition\SpeechRecognition.Build.cs
+W:\UE4\IAProyecto1\Source\Sphinx_UE4_Demo.Target.cs
+W:\UE4\IAProyecto1\Source\Sphinx_UE4_DemoEditor.Target.cs

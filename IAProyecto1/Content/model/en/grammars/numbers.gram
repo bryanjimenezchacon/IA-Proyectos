@@ -1,0 +1,15 @@
+#JSGF V1.0;
+
+grammar check;
+
+public <final_rule> = <final>;
+
+<final> = <movimiento> | <diagonal>;
+
+<movimiento> = (mover) <direccion>;
+
+<diagonal> = (diagonal) <cardinal>;
+
+<cardinal> = (noroeste | noreste | sureste | suroeste);
+
+<direccion> = (arriba | abajo | izquierda | derecha);

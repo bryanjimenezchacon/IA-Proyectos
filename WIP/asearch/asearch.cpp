@@ -149,6 +149,24 @@ bool isUnBlocked(Grid grid, int row, int col)
         return (false);
 }
 
+
+// A Utility Function to check whether the given cell is
+// blocked or not for diagonal movement:
+// this means it will move diagonally only if the two
+// adjacent blocks are not both blocked
+bool isUnBlockedDiagonally(Grid grid, int src_row, int src_col,
+                          int dest_row, int dest_col, bool diagonals)
+{
+    // Returns true if the cell is not blocked else false
+    if (!diagonals)
+        return (isUnBlocked(grid, dest_row, dest_col));
+    if (grid[dest_row][src_col] == UNBLOCKED ||
+        grid[src_row][dest_col] == UNBLOCKED  )
+        return (isUnBlocked(grid, dest_row, dest_col));
+    else
+        return (false);
+}
+
 // A Utility Function to check whether destination cell has
 // been reached or not
 bool isDestination(int row, int col, Pair dest)
@@ -214,7 +232,6 @@ Grid grid_from_path(Path path, Grid grid){
   for ( int i = 0 ; i < RR ; i++ )
     path_grid[i].resize(CC);
 
-  //llena filas con su numero de fila, pa checkear
   for(int i = 0; i<path.size() ; i++){
     path_grid[path[i].first][path[i].second]=1;
   }
@@ -266,8 +283,6 @@ bool successor(cellGrid& cellDetails, set<pPair>& openList, vector<vector<bool>>
         double gNew, hNew, fNew;
         bool foundDest;
 
-        //----------- 1st Successor (North) ------------
-
         // Only process this cell if this is a valid one
         if (isValid(successor_i, successor_j, grid) == true)
         {
@@ -286,7 +301,8 @@ bool successor(cellGrid& cellDetails, set<pPair>& openList, vector<vector<bool>>
             // list or if it is blocked, then ignore it.
             // Else do the following
             else if (closedList[successor_i][successor_j] == false &&
-                     isUnBlocked(grid, successor_i, successor_j) == true)
+                     isUnBlockedDiagonally(grid, parent_i, parent_j,
+                     successor_i, successor_j, diagonals) == true)
             {
                 gNew = cellDetails[parent_i][parent_j].g + 1.0;
                 hNew = calculateHValue (successor_i, successor_j, dest, diagonals);
@@ -407,7 +423,7 @@ Path aStarSearch(Grid grid, Pair src, Pair dest, bool diagonals)
         N -->  North       (i-1, j)
         S -->  South       (i+1, j)
         E -->  East        (i, j+1)
-        W -->  West           (i, j-1)
+        W -->  West        (i, j-1)
         N.E--> North-East  (i-1, j+1)
         N.W--> North-West  (i-1, j-1)
         S.E--> South-East  (i+1, j+1)
@@ -513,7 +529,7 @@ int main(){
         { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
         { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
         { 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
-        { 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
+        { 1, 1, 0, 0, 1, 1, 1, 0, 1, 0 },
         { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
         { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
         { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },

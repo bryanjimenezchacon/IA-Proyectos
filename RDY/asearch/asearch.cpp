@@ -57,7 +57,7 @@ Some rules:
 
     A) Hay prints para todo
 
-    B) make_grid(Grid grid):
+    B) make_grid(int filas, int columnas):
         crea un grid aleatorio dadas sus dimensiones
         returns Grid;
 

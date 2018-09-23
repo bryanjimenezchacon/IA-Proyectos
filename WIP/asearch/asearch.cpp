@@ -1,5 +1,6 @@
 // A C++ Program to implement A* Search Algorithm
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#include "asearch.hpp"
 using namespace std;
 
  /*
@@ -42,45 +43,35 @@ Some rules:
       solucion   Path deque<pair<int, int>>
 
       'returns' en caso de:
-        no encuentra ruta     --> path.size() = 0
-        src o dest no validos --> path.size() = 0
+        no encuentra ruta     --> path.size() == 0
+        src o dest no validos --> path.size() == 0
 
   Restricciones
   =============
 
     A) El grid debe ser 2x2 o MAYOR
-        utilizar la funcion de crear grid (PENDING)
-        utilizar la funcion de elminar grid (PENDING)(necesario?)
+        utilizar la funcion de crear grid
 
   Funciones
   =========
 
     A) Hay prints para todo
 
-    B) crear_grid/cambiar_grid (PENDING)
+    B) make_grid(Grid grid):
+        crea un grid aleatorio dadas sus dimensiones
+        returns Grid;
+
+    C) make_src_dest(Grid grid):
+        crea aleatoriamente un punto inicial
+        y uno final dentro de un grid
+        returns pair<Pair,Pair>;
+          donde el primer Pair es source, segundo es destino
 
     C) Funcion para validar src/destino:
         validate_src_dest()
 
  */
 
-// valores para las celdas
-#define UNBLOCKED 1
-#define BLOCKED   0
-
-
-// Creating a shortcut for int, int pair type
-typedef pair<int, int> Pair;
-
-// Creating a shortcut for pair<int, pair<int, int>> type
-typedef pair<double, pair<int, int>> pPair;
-
-// Grid shortcut
-typedef vector<vector<int>> Grid;
-
-// Path Found
-// Empty if none found
-typedef deque<Pair> Path;
 
 // A structure to hold the neccesary parameters
 struct cell
@@ -91,10 +82,6 @@ struct cell
     // f = g + h
     double f, g, h;
 };
-
-// 2D array of cells
-typedef vector<vector<cell>> cellGrid;
-
 
 // A Utility Function to check whether given cell (row, col)
 // is a valid cell or not.
@@ -116,6 +103,7 @@ void print_grid(Grid grid){
     }
     cout << "\n";
   }
+  cout << "\n";
 }
 
 //imprime un pair
@@ -133,7 +121,7 @@ void print_path(Path path){
       print_pair(path[i]);
       printf("--> ");
     }
-    printf("end.\n");
+    printf("end.\n\n");
   }
 }
 
@@ -160,6 +148,9 @@ bool isUnBlockedDiagonally(Grid grid, int src_row, int src_col,
     // Returns true if the cell is not blocked else false
     if (!diagonals)
         return (isUnBlocked(grid, dest_row, dest_col));
+    // Checks that a diagonal movement is allowed by
+    // possible walls, if it's not a diagonal movement
+    // it will be allowed by the conditions any way
     if (grid[dest_row][src_col] == UNBLOCKED ||
         grid[src_row][dest_col] == UNBLOCKED  )
         return (isUnBlocked(grid, dest_row, dest_col));
@@ -225,7 +216,14 @@ Path tracePath(cellGrid cellDetails, Pair dest)
     return path;
 }
 
+//returns empty grid if no path is found
 Grid grid_from_path(Path path, Grid grid){
+  if(path.size()==0){
+    printf("Cannot make grid from empty path. "
+      "(Path wasn't found probably)\n");
+    Grid empty_grid(0);
+    return empty_grid;
+  }
   int RR = grid.size();
   int CC = grid[0].size();
   Grid path_grid(RR);
@@ -293,7 +291,7 @@ bool successor(cellGrid& cellDetails, set<pPair>& openList, vector<vector<bool>>
                 // Set the Parent of the destination cell
                 cellDetails[successor_i][successor_j].parent_i = parent_i;
                 cellDetails[successor_i][successor_j].parent_j = parent_j;
-                printf ("The destination cell is found\n");
+                printf ("\nA* finished: The destination cell is found\n\n");
                 foundDest = true;
                 return(foundDest);
             }
@@ -338,6 +336,8 @@ bool successor(cellGrid& cellDetails, set<pPair>& openList, vector<vector<bool>>
 // A Function to find the shortest path between
 // a given source cell to a destination cell according
 // to A* Search Algorithm
+// if path not found: returns an empty Path:
+//    path.size()=0;
 Path aStarSearch(Grid grid, Pair src, Pair dest, bool diagonals)
 {
     Path path;
@@ -491,75 +491,73 @@ Path aStarSearch(Grid grid, Pair src, Pair dest, bool diagonals)
     // reach the destiantion cell. This may happen when the
     // there is no way to destination cell (due to blockages)
     if (foundDest == false)
-        printf("Failed to find the Destination Cell\n");
-
+        printf("\nA* finished: Failed to find the Destination Cell\n");
     return path;
 }
 
+// devuelve grid vacio si fila o columna < 2
+Grid make_grid(int filas, int columnas){
+    //validacion
+    if (filas < 2 || columnas < 2 ){
+      printf("Invalid size for the grid");
+      Grid empty_grid(0,vector<int>(0));
+      return empty_grid;
+    }
 
+    //crear el grid con UNBLOCKED
+    Grid grid(filas);
+    for ( int i = 0 ; i < filas ; i++ )
+      grid[i].resize(columnas, UNBLOCKED);
 
-int main(){
+    //asegurarse de que al menos dos posiciones sean UNBLOCKED 
+    //para poder generar source y dest
+    srand(time(NULL));
+    int src_c, src_r, dest_c, dest_r;
+    do{
+      src_c = rand() % columnas;
+      src_r = rand() % filas;
+      dest_c = rand() % columnas;
+      dest_r = rand() % filas;
+    }while(src_c!=dest_c||src_r!=dest_r);
+    for(int row = 0; row<grid.size() ; row++){
+      for(int col = 0; col<grid[0].size() ; col++){
+        //skip the two positions previously chosen
+        if(row!=src_r && col!=src_c && row!=dest_r && col!=dest_c){
+          int possibility = rand()%100;
+          if(possibility<PERCENT_BLOCKED){
+            grid[row][col]=BLOCKED;
+          }
+        }
+      }
+    }
+    return grid;
+}
 
-/*
-  //crea un grid segun lo que uno le meta, pa checkear
-  int RR, CC; //RR = rows CC = cols
-  cin >> RR;
-  cin >> CC;
-  Grid grid(RR);
-  for ( int i = 0 ; i < RR ; i++ )
-    grid[i].resize(CC);
-
-  //llena filas con su numero de fila, pa checkear
+// si el grid no es valido devuelve un resultado con posiciones -1
+pair<Pair,Pair> make_src_dest(Grid grid){
+  if(grid.size()<2 || grid[0].size()<2){
+    printf("wrong size grid, too small\n");
+    pair<Pair, Pair> invalid_pair({-1,-1},{-1,-1});
+    return invalid_pair;
+  }
+  srand(time(NULL));
+  vector<Pair> list;
   for(int row = 0; row<grid.size() ; row++){
     for(int col = 0; col<grid[0].size() ; col++){
-      grid[row][col]=row;
+      if(grid[row][col]==UNBLOCKED){
+        list.push_back(make_pair(row,col));
+      }
     }
   }
-
-
-  print_grid(grid);
-*/
-
-    /* Description of the Grid-
-     1--> The cell is not blocked
-     0--> The cell is blocked    */
-    Grid grid
-    {
-        { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-        { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
-        { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
-        { 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
-        { 1, 1, 0, 0, 1, 1, 1, 0, 1, 0 },
-        { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
-        { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
-        { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-        { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
-    };
-
-    // Source is the left-most bottom-most corner
-    Pair src = make_pair(8, 0);
-
-    // Destination is the left-most top-most corner
-    Pair dest = make_pair(0, 0);
-
-    Path result = aStarSearch(grid, src, dest, true);
-    print_path(result);
-    Grid grid_result = grid_from_path(result,grid);
-    printf("\n");
-    print_grid(grid);
-    printf("\n");
-    print_grid(grid_result);
-
-    printf("\n sin diagonales \n");
-    result = aStarSearch(grid, src, dest, false);
-    print_path(result);
-    grid_result = grid_from_path(result,grid);
-    printf("\n");
-    print_grid(grid);
-    printf("\n");
-    print_grid(grid_result);
-
-    return(0);
-
-
+  if(list.size()<2){
+    printf("grid doesnt have 2 free spaces for src/dest\n");
+    pair<Pair, Pair> invalid_pair({-1,-1},{-1,-1});
+    return invalid_pair;
+  }
+  int i = rand()%list.size();
+  Pair src = make_pair(list[i].first, list[i].second);
+  list.erase(list.begin()+i);
+  i = rand()%list.size();
+  Pair dest = make_pair(list[i].first, list[i].second);
+  return make_pair(src,dest);
 }

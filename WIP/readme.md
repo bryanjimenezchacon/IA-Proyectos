@@ -4,10 +4,9 @@ dentro de asearch esta el algoritmo en progreso.
 
 Incluye:
 
-* **asearch.cpp**         el algoritmo asearch y las funciones utiles correspondientes
-* **makefile**            el makefile por ahora
-* **onlineasearch.cpp**   el algoritmo de internet en el que me estoy basando
-* **online.prog**         el compilado/binario del ejemplo de internet
-* **prog**                el compilado/binario del que estoy haciendo
+* **asearch.cpp**:         el algoritmo asearch y definicion de funciones
+* **asearch.hpp**:         header de **asearch.cpp**, es el archivo a incluir para usar las funciones de **asearch.cpp** como libreria
+* **main.asearch.cpp**:    programa para probar **asearch.cpp** desde la linea de comandos
+* **makefile**:            el makefile, compila el **main.asearch.cpp**
 
 (talvez no puedan correr los binarios porque los compile en arch linux)

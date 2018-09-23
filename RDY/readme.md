@@ -1,6 +1,6 @@
 
 
-dentro de asearch esta el algoritmo completo.
+dentro de `\asearch` esta el algoritmo completo.
 
 Incluye:
 

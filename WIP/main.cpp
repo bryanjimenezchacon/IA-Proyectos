@@ -1,5 +1,5 @@
-#include "backend.hpp"
-#include "genetica.hpp"
+#include "backend.cpp"
+#include "genetica.cpp"
 
 
 int main(){

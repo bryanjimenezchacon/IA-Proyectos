@@ -1,10 +1,16 @@
+#ifdef BACKEND
+#define BACKEND
+
 #include <bits/stdc++.h>
 #include "genetica.hpp"
+#include "backend.hpp"
+
 
 //contains the whole model of the simulation
 // - lanes
 // - waiting room
 class Facility {
+  std::vector<Vehicle> waitingRoom;
 
 };
 
@@ -36,8 +42,9 @@ std::map<VType, int> VDuration
 
 // different types with different values
 class Vehicle{
-    int  duration;
+  int    duration;
   VType  type    ;
+
   public:
   Vehicle(VType type){
     this->type     = type;
@@ -45,7 +52,4 @@ class Vehicle{
   };
 };
 
-// contains vehicles
-class WaitingRoom{
-
-};
+#endif

@@ -2,8 +2,7 @@
 #define BACKEND
 
 #include <bits/stdc++.h>
-#include "genetica.hpp"
-#include "backend.hpp"
+#include "genetica.cpp"
 
 
 //contains the whole model of the simulation
@@ -11,11 +10,19 @@
 // - waiting room
 class Facility {
   std::vector<Vehicle> waitingRoom;
+  std::vector<Lane> allLanes;
+
+  public:
+  Facility();
 
 };
 
 // contains the vehicles
 class Lane {
+  int max_capacity;
+  int progressFirstV;
+  Vehicle firstV;
+  std::vector<Vehicle> queue;
 
 };
 

@@ -9,20 +9,17 @@ class Distribute;
 class Individual{
   std::deque<int> representation;
   const Distribute& distribute;
+  int fitness;
 
   Individual()=delete;
 
   public:
   //create individual from deque
-  Individual(std::deque<int>, Distribute&);
+  Individual(std::deque<int>,std::deque<int>, Distribute&);
   Individual(Distribute&);
 
   //returns fitness score of an individual
   void evaluate_fitness();
-  //crossovers the partners selected
-  //generates new individual
-  //new individual is added to the next population
-  void reproduce_individual();
 
   //adds mutation
   void mutate_individual();
@@ -56,9 +53,6 @@ class Population{
   //creates the new population
   //removes the old population
   void reproduce_population();
-
-  //chooses which individuals will be mutated
-  void mutate_population();
 
 };
 

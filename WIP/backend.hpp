@@ -45,7 +45,7 @@ const std::map<VType, const std::string> VName
 };
 
 // different types with different values
-class Vehicle : Time{
+class Vehicle : public Time{
   int    duration;
   VType  type    ;
 
@@ -71,7 +71,8 @@ class Lane : public Time{
 
   void removeType(VType);
   void addType(VType);
-  bool addToQueue(VType); //false = not allowed, true = allowed
+  bool addToQueue(VType); //returns false=not allowed, true=allowed
+  bool addToQueue(Vehicle); //returns false=not allowed, true=allowed
   void removeFirst();
   void pauseLane(int seconds){pause=seconds;};
   void unpauseLane(){pause=0;};
@@ -87,12 +88,28 @@ class Lane : public Time{
 //contains the whole model of the simulation
 // - lanes
 // - waiting room
-class Facility {
-  std::vector<Vehicle> waitingRoom;
-  std::vector<Lane> allLanes;
+class Facility : public Time {
+  std::deque<Vehicle> waitingRoom;
+  std::deque<Lane> allLanes;
 
   public:
+  std::deque<Lane> getAllLanes(){return allLanes;};
+  void setAllLanes(std::deque<Lane> l){allLanes = l;};
+  std::deque<Vehicle> getWaitingRoom(){return waitingRoom;};
+  void setWaitingRoom(std::deque<Vehicle> w){waitingRoom = w;};
+
   Facility(){};
+  void addToWaitingRoom(VType v);
+  void addLane(int capacity, std::map<int,VType> = std::map<int,VType>());
+  void addLane(Lane lane);
+  void executeSecond();
+
+  int getLanesSize(){return allLanes.size();};
+  Lane& getLaneAt(int i) {return allLanes[i]; };
+  Lane& operator[](int i) { return allLanes[i]; };
+
+  void printWaitingRoom();
+  void printFacility();
 
 };
 

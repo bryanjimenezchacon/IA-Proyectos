@@ -42,7 +42,34 @@ int main(){
   //lane.executeSeconds(45); ejemplo para ejecutar 45 segundos
   //ejecuta 1 segundo, el primer vehiculo en fila pierde duracion
   lane.executeSecond();
-  lane.printLane();
+  lane.printLane(); //prints lane information
+
+  // 000000000000000000000000000000
+  // un Faciliy es como el objeto que contiene todo
+  // el modelo del problema, los lanes y el waitingRoom
+  Facility f;
+  // se agrega la linea que creamos
+  f.addLane(lane);
+  // se agrega una nueva linea, vacia, de capacidad 300
+  f.addLane(300);
+  f.addToWaitingRoom(VType::Camion);
+  f.addToWaitingRoom(VType::Camion);
+  f.addToWaitingRoom(VType::Moto_v);
+  f.printFacility();
+
+  std::cout<<"\n total lanes in facility: " << f.getLanesSize() << "\n";
+  //recibir un lane para cambiarlo:
+  f.getLaneAt(1).printLane(); // out_of_range si se pasa
+  //o tambien se puede acceder como si fuera un array
+  f[1].addType(VType::Camion); //se agrega camion en allowedVehicles
+  f[1].addToQueue(VType::Camion); //se agrega camion en allowedVehicles
+  f[1].printLane(); //el lane dentro del facility cambia
+
+  f.executeSeconds(40);
+  f.printFacility(); //demostrar que cambia
+
+
+
 
 
   return 0;

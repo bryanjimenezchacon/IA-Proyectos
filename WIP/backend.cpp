@@ -70,6 +70,14 @@ bool Lane::addToQueue(VType v){
   return false;
 }
 
+bool Lane::addToQueue(Vehicle v){
+  if(isAllowed(v.getType())){
+    vehicleQ.push_back(v);
+    return true;
+  }
+  return false;
+}
+
 void Lane::removeFirst(){
   if(!vehicleQ.empty()){
     vehicleQ.pop_front();
@@ -111,3 +119,41 @@ void Lane::printLane(){
   printAllowed();
   printVehicleQ();
 }
+
+void Facility::addToWaitingRoom(VType v){
+  waitingRoom.push_back(Vehicle(v));
+}
+
+void Facility::addLane(int capacity, std::map<int,VType> types){
+  allLanes.push_back(Lane(capacity,types));
+}
+
+void Facility::addLane(Lane lane){
+  allLanes.push_back(lane);
+}
+
+void Facility::executeSecond(){
+  for(auto it=allLanes.begin(); it!=allLanes.end(); ++it){
+    it->executeSecond();
+  }
+}
+
+void Facility::printWaitingRoom(){
+  std::cout << "--- waitingRoom ---" << "\n[";
+  for(auto it=waitingRoom.begin(); it!=waitingRoom.end(); ++it){
+    std::cout << it->getDuration() << VName.at(it->getType());
+  }
+  std::cout << "]\n";
+}
+void Facility::printFacility(){
+  std::cout << "\n";
+  std::cout << "00000000000000000000000000" << "\n";
+  std::cout << "0000     FACILITY     0000" << "\n";
+  printWaitingRoom();
+  for(int i = 0; i < allLanes.size(); ++i){
+    allLanes[i].printLane();
+  }
+  std::cout << "0000                  0000" << "\n";
+  std::cout << "00000000000000000000000000" << "\n";
+}
+

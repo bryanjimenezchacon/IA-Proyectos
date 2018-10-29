@@ -7,11 +7,12 @@ int main(){
   //VType es un enum, representa las categorias de vehiculos
 
   //class Lane representa una linea de servicio
-  //aqui se inicializa con 100 segundos de capacidad maxima
+  //aqui se inicializa con 130 segundos de capacidad maxima
   //tambien se puede incializar con un
   //std::map de VType como segundo parametro
   Lane lane(130);
   //VType es un enum, representa los tipos de vehiculo
+  //addType agrega un tipo de vehiculo permitido a la linea
   lane.addType(VType::Moto);
   lane.addType(VType::Moto_v);
   //no importa si trata de agregar el mismo tipo dos veces
@@ -24,6 +25,8 @@ int main(){
   lane.printAllowed();
 
   //agregar vehiculo a la linea de espera para brindar servicio
+  //el addType es como decirle cuales son admitidos
+  //el addToQueue es cuando ya un vehiculo que es admitido se mete a la fila
   lane.addToQueue(VType::Moto_v);
   lane.addToQueue(VType::Auto);
   lane.addToQueue(VType::Moto_v);
@@ -32,8 +35,8 @@ int main(){
   std::cout << aceptado << "\n";
   lane.printVehicleQ();
 
-  lane.removeFirst(); //eliminar el primero de la fila
-  lane.printVehicleQ();
+  lane.removeFirst(); //eliminar el primer vehiculo de la fila
+  lane.printVehicleQ(); //imprimir a consola los vehiculos de la fila
 
   lane.addType(VType::Camion);
   lane.addToQueue(VType::Camion); //no se agrega porque no hay capacidad
@@ -66,7 +69,10 @@ int main(){
   f[1].addToQueue(VType::Camion); //se agrega camion en allowedVehicles
   f[1].printLane(); //la linea dentro del facility cambia
 
-  f.executeSeconds(40);
+  f.executeSeconds(40); //realiza varias llamadas de "executeSecond"
+  // en este caso usar "executeSecond" en el "facility" hace que se
+  // ejecute un segundo en cada una de sus lineas, entonces solo hay
+  // que llamar el executeSecond de "facility"
   f.printFacility(); //demostrar que cambia
 
 

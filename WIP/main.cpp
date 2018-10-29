@@ -58,12 +58,13 @@ int main(){
   f.printFacility();
 
   std::cout<<"\n total lanes in facility: " << f.getLanesSize() << "\n";
-  //recibir un lane para cambiarlo:
+  //acceder a la linea numer 1 y ejecutar operaciones sobre esta
+  //en este caso se ejecuta la operacion .printLane()
   f.getLaneAt(1).printLane(); // out_of_range si se pasa
   //o tambien se puede acceder como si fuera un array
   f[1].addType(VType::Camion); //se agrega camion en allowedVehicles
   f[1].addToQueue(VType::Camion); //se agrega camion en allowedVehicles
-  f[1].printLane(); //el lane dentro del facility cambia
+  f[1].printLane(); //la linea dentro del facility cambia
 
   f.executeSeconds(40);
   f.printFacility(); //demostrar que cambia

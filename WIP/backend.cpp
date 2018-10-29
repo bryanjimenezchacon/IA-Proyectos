@@ -41,7 +41,59 @@ void Lane::removeType(VType type){
 
 }
 
-void Lane::addToQueue(Vehicle v){
+int Lane::currentCapacity(){
+  int seconds=0;
+  for(auto it=vehicleQ.begin(); it!=vehicleQ.end(); ++it){
+    seconds=seconds+it->getDuration();
+  }
+  return seconds;
+}
+
+bool Lane::isAllowed(VType v){
+  int key = static_cast<int>(v);
+  auto it = allowedVehicles.find(key);
+  //if allowed type
+  if(it != allowedVehicles.end()){
+    //if lane capacity has space
+    if(max_capacity-currentCapacity()>=VDuration.at(v)){
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Lane::addToQueue(VType v){
+  if(isAllowed(v)){
+    vehicleQ.push_back(Vehicle(v));
+    return true;
+  }
+  return false;
+}
+
+void Lane::removeFirst(){
+  if(!vehicleQ.empty()){
+    vehicleQ.pop_front();
+  }
+}
+
+void Lane::executeSecond(){
+  if(vehicleQ.empty()){
+    //do nothing if no cars
+    return;
+  }
+  vehicleQ.front().executeSecond();
+  if(vehicleQ.front().getDuration()==0){
+    vehicleQ.pop_front();
+  }
+}
+
+
+void Lane::printVehicleQ(){
+  std::cout << "--- vehicleQueue ---" << "\n" << "front:";
+  for(auto it=vehicleQ.begin(); it!=vehicleQ.end(); ++it){
+    std::cout << it->getDuration() << VName.at(it->getType());
+  }
+  std::cout << ":back\n";
 }
 
 void Lane::printAllowed(){
@@ -52,3 +104,10 @@ void Lane::printAllowed(){
   std::cout << "\n";
 }
 
+void Lane::printLane(){
+  std::cout << "\n" << "####     LANE     ####" << "\n";
+  std::cout << "max_capacity:" << max_capacity;
+  std::cout << " current_capacity:" << currentCapacity() << "\n";
+  printAllowed();
+  printVehicleQ();
+}

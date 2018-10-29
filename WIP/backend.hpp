@@ -6,7 +6,7 @@
 class Time{
   public:
   void executeSeconds(int seconds);
-  virtual void executeSecond();
+  virtual void executeSecond() = 0;
 };
 
 
@@ -20,6 +20,7 @@ enum class VType {
   Camion_v     // camion viejo
 };
 
+// duracion de servicio de cada vehiculo en segundos
 const std::map<VType, int> VDuration
 {
     { VType::Moto     , 20  },
@@ -31,6 +32,7 @@ const std::map<VType, int> VDuration
     { VType::Camion_v , 120 }
 };
 
+// nombres del enum, util para prints
 const std::map<VType, const std::string> VName
 {
     { VType::Moto     ,  "Moto    " },
@@ -43,32 +45,41 @@ const std::map<VType, const std::string> VName
 };
 
 // different types with different values
-class Vehicle{
+class Vehicle : Time{
   int    duration;
   VType  type    ;
 
   public:
   Vehicle(VType vtype);
+  VType getType(){return type;}
+  int getDuration(){return duration;}
+  void executeSecond(){duration--;};
 };
 
 // contains the vehicles
-class Lane {
+class Lane : public Time{
   int pause = 0;
-  int progressFirstV=0;
-  std::vector<Vehicle> queue;
+  std::deque<Vehicle> vehicleQ;
   std::map<int,VType> allowedVehicles; //no repeated elements
   int max_capacity;
+
+  bool isAllowed(VType);
+  int currentCapacity();
 
   public:
   Lane(int capacity, std::map<int,VType> = std::map<int,VType>());
 
   void removeType(VType);
   void addType(VType);
-  void addToQueue(Vehicle);
-  // pauseLane(int seconds)
-  // executeSecond()
-  
+  bool addToQueue(VType); //false = not allowed, true = allowed
+  void removeFirst();
+  void pauseLane(int seconds){pause=seconds;};
+  void unpauseLane(){pause=0;};
+  void executeSecond();
+
+  void printVehicleQ();
   void printAllowed();
+  void printLane();
 
 };
 

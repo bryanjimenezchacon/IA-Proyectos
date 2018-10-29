@@ -1,62 +1,54 @@
-#ifdef BACKEND
-#define BACKEND
-
 #include <bits/stdc++.h>
-#include "genetica.cpp"
+#include "backend.hpp"
 
 
-//contains the whole model of the simulation
-// - lanes
-// - waiting room
-class Facility {
-  std::vector<Vehicle> waitingRoom;
-  std::vector<Lane> allLanes;
 
-  public:
-  Facility();
+void Time::executeSeconds(int seconds){
+  for(;seconds>0;--seconds){
+    this->executeSecond();
+  }
+}
 
+
+Vehicle::Vehicle(VType vtype){
+  type     = vtype;
+  duration = VDuration.at(type);
 };
 
 // contains the vehicles
-class Lane {
-  int max_capacity;
-  int progressFirstV;
-  Vehicle firstV;
-  std::vector<Vehicle> queue;
+Lane::Lane(int capacity, std::map<int,VType> types){
+  max_capacity = capacity;
+  allowedVehicles = types;
+}
 
-};
+void Lane::addType(VType type){
+  int key = static_cast<int>(type);
+  auto it = allowedVehicles.find(key);
+  //checks if type already is added
+  if(it == allowedVehicles.end()){
+    allowedVehicles[key]=type;
+    //adds if it doesn't exist
+  }
+}
+void Lane::removeType(VType type){
+  int key = static_cast<int>(type);
+  auto it = allowedVehicles.find(key);
+  //checks if type is already added
+  if(it != allowedVehicles.end()){
+    allowedVehicles.erase(it);
+    //removes if it exists
+  }
 
-enum class VType {
-  Moto      ,  // moto
-  Moto_v    ,  // moto vieja
-  Auto      ,  // automovil
-  Auto_v    ,  // automovil viejo
-  Bus       ,  // bus
-  Camion    ,  // camion
-  Camion_v     // camion viejo
-};
+}
 
-std::map<VType, int> VDuration
-{
-    { VType::Moto     , 20  },
-    { VType::Moto_v   , 30  },
-    { VType::Auto     , 40  },
-    { VType::Auto_v   , 60  },
-    { VType::Bus      , 80  },
-    { VType::Camion   , 100 },
-    { VType::Camion_v , 120 }
-};
+void Lane::addToQueue(Vehicle v){
+}
 
-// different types with different values
-class Vehicle{
-  int    duration;
-  VType  type    ;
+void Lane::printAllowed(){
+  std::cout << "--- allowedVehicles ---" << "\n";
+  for(auto it=allowedVehicles.begin(); it!=allowedVehicles.end(); ++it){
+    std::cout << VName.at(it->second);
+  }
+  std::cout << "\n";
+}
 
-  public:
-  Vehicle(VType type){
-    this->type     = type;
-    this->duration = VDuration[type];
-  };
-};
-
-#endif

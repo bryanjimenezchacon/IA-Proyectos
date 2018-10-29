@@ -1,9 +1,5 @@
-#ifdef BACKEND
-#define BACKEND
-
 #include <bits/stdc++.h>
-#include "backend.cpp"
-
+#include "backend.hpp"
 
 class Population{
 
@@ -71,4 +67,3 @@ void mutate_individual(){
 //starts cycle again
 ////////////////////////////////////////
 
-#endif

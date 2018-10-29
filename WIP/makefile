@@ -1,5 +1,5 @@
 all: rtv
 
-rtv: main.cpp backend.cpp genetica.cpp
+rtv: main.cpp backend.cpp genetica.cpp backend.hpp
 	g++ genetica.cpp backend.cpp main.cpp -o rtv
 

@@ -7,13 +7,14 @@
 class Distribute;
 
 class Individual{
-  std::deque<int> representation;
-  const Distribute& distribute;
-  int fitness;
+  std::deque<uint32_t> representation;
+  Distribute& info;
+  double fitness;
 
   Individual()=delete;
 
   public:
+  int getFitness(){return fitness;};
   //create individual from deque
   Individual(std::deque<int>,std::deque<int>, Distribute&);
   Individual(Distribute&);
@@ -23,15 +24,18 @@ class Individual{
 
   //adds mutation
   void mutate_individual();
+  uint32_t& operator[](int i) { return representation[i]; };
+
+  void printIndividual();
+
 
 };
 
-
 class Population{
-  const int size = 100;
+  const int p_size = 100;
   int fitness;
   std::deque<Individual> population;
-  const Distribute& distribute;
+  Distribute& info;
 
   Population()=delete;
 
@@ -53,6 +57,9 @@ class Population{
   //creates the new population
   //removes the old population
   void reproduce_population();
+  Individual& operator[](int i) { return population[i]; };
+
+  void printPopulation();
 
 };
 
@@ -61,9 +68,9 @@ class Distribute{
 
   std::deque<Vehicle> waitingRoom;
   std::deque<Lane> allLanes;
-  int max_val;
-  int max_len;
-  const Facility& facility;
+  Facility& facility;
+  std::mt19937 rng;
+  std::uniform_int_distribution<uint32_t> uint_dist;
 
   Population population;
 
@@ -75,12 +82,22 @@ class Distribute{
   void generate_distribution();
 
   public:
+  int totalCapacity();
+  int laneCapacity(int index);
+  void printPopulation(){population.printPopulation();};
+
+  const int max_val; //number of lanes
+  const int max_len; //number of vehicles to distribute
+
   auto getWaitingRoom(){return waitingRoom;};
   auto getAllLanes(){return allLanes;};
 
+  int random(){return uint_dist(rng);};
   //calling the constructor will be all that's
   //needed to go through the whole process
   Distribute(Facility&);
+
+  void execute();
 
 };
 #endif

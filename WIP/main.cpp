@@ -1,5 +1,5 @@
 #include "backend.hpp"
-//#include "genetica.cpp"
+#include "genetica.hpp"
 
 
 int main(){
@@ -75,6 +75,13 @@ int main(){
   // que llamar el executeSecond de "facility"
   f.printFacility(); //demostrar que cambia
 
+
+
+
+  //################### distribute test  ##################
+  Distribute dist(f);
+  std::cout<<"\n"<<dist.random()<<" "<<dist.max_len<<" "<<dist.max_val<<"\n";
+  dist.printPopulation();
 
 
 

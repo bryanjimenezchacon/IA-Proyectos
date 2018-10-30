@@ -64,11 +64,13 @@ class Lane : public Time{
   int max_capacity;
 
   bool isAllowed(VType);
-  int currentCapacity();
 
   public:
   Lane(int capacity, std::map<int,VType> = std::map<int,VType>());
 
+  bool compatibleType(VType);
+  int currentCapacity();
+  int remainingCapacity();
   void removeType(VType);
   void addType(VType);
   bool addToQueue(VType); //returns false=not allowed, true=allowed

@@ -41,6 +41,12 @@ void Lane::removeType(VType type){
 
 }
 
+
+
+int Lane::remainingCapacity(){
+  return max_capacity-currentCapacity();
+}
+
 int Lane::currentCapacity(){
   int seconds=0;
   for(auto it=vehicleQ.begin(); it!=vehicleQ.end(); ++it){
@@ -60,6 +66,17 @@ bool Lane::isAllowed(VType v){
     }
   }
   return false;
+}
+
+bool Lane::compatibleType(VType v){
+  int key = static_cast<int>(v);
+  auto it = allowedVehicles.find(key);
+  //if allowed type
+  if(it != allowedVehicles.end()){
+    return true;
+  }
+  return false;
+
 }
 
 bool Lane::addToQueue(VType v){

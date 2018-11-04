@@ -80,9 +80,15 @@ int main(){
 
   //################### distribute test  ##################
   Distribute dist(f);
-  std::cout<<"\n"<<dist.random()<<" "<<dist.max_len<<" "<<dist.max_val<<"\n";
-  dist.printPopulation();
+  //std::cout<<"\n"<<"dist.random()"<<" "<<dist.max_len<<" "<<dist.max_val<<"\n";
+  //dist.printPopulation();
+  //dist.nextgen();
+  //dist.printPopulation();
+  //dist.nextgen();
+  //dist.printPopulation();
 
+  //dist.printPopulation(); //population after 50 generations
+  f.printFacility();
 
 
 

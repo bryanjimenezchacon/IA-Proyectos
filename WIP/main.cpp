@@ -79,7 +79,14 @@ int main(){
 
 
   //################### distribute test  ##################
+
+  // Todo lo que tienen que hacer para la distribucion es
+  // llamar al constructor de esta clase con el "facility" como
+  // parametro. Esto ejecuta el GA y distribuye los carros.
   Distribute dist(f);
+
+
+
   //std::cout<<"\n"<<"dist.random()"<<" "<<dist.max_len<<" "<<dist.max_val<<"\n";
   //dist.printPopulation();
   //dist.nextgen();
@@ -88,6 +95,9 @@ int main(){
   //dist.printPopulation();
 
   //dist.printPopulation(); //population after 50 generations
+
+
+  // aqui podemos ver como queda el facility luego de distribuirlos
   f.printFacility();
 
 

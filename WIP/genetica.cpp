@@ -202,7 +202,21 @@ Distribute::Distribute(Facility& f)
   index_dist = std::uniform_int_distribution<uint32_t>(0,max_len-1);
   binary_dist = std::uniform_int_distribution<uint32_t>(0,1);
   srand (time(NULL));
+
+  outfile.open(outfile_name(), std::ios::out | std::ios::trunc );
+  std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+  std::cout.rdbuf(outfile.rdbuf()); //redirect cout to outfile
+
   execute();
+
+  std::cout.rdbuf(coutbuf);
+  outfile.close();
+}
+
+std::string Distribute::outfile_name(){
+  std::string name = "d"+std::to_string(file_count)+".txt";
+  ++file_count;
+  return name;
 }
 
 int Distribute::laneCapacity(int index){
@@ -219,10 +233,13 @@ int Distribute::totalCapacity(){
 }
 
 void Distribute::execute(){
+  if(waitingRoom.size()==0){return;}
   population.initialize_population();
+  population.printPopulation();
   //run as many generations as defined in the class
   for(int i=0;i<generations;++i){
     population.advance_generation();
+    population.printPopulation();
   }
   distribute_cars();
 }

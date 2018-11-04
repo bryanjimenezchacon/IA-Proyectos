@@ -3,6 +3,7 @@
 
 #include "backend.hpp"
 
+//to write files after distributing
 
 class Distribute;
 
@@ -79,8 +80,9 @@ class Population{
 
 };
 
+static int file_count = 0;
 
-class Distribute{
+class Distribute {
 
   const int generations = 50;
 
@@ -95,6 +97,9 @@ class Distribute{
   std::exponential_distribution<double> exp_dist = std::exponential_distribution<double> (0.25);
 
   Population population;
+
+  std::ofstream outfile;
+  std::string outfile_name();
 
 
 

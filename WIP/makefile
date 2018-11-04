@@ -18,7 +18,7 @@ rtv: $(OBJ)
 .PHONY: clean
 
 clean:
-	rm rtv $(OBJ)
+	rm rtv $(OBJ) *.txt
 
 #o corran lo siguiente en la terminal lol:
 #g++ genetica.cpp backend.cpp main.cpp -o rtv

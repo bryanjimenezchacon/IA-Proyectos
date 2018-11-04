@@ -1,4 +1,4 @@
-dentro de `\geneticalgo` esta el modelo del problema completo.
+dentro de `\genetic_algo` esta el modelo del problema completo.
 
 Incluye:
 

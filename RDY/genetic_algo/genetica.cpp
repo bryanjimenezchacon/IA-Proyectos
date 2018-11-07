@@ -80,7 +80,7 @@ void Individual::evaluate_fitness(){
     loadxlane[representation[i]-1] += weight;
   }
   //goes through each lane and its total weight
-  for(int i = 0; i < info->max_len; ++i){
+  for(int i = 0; i < info->max_val; ++i){
     //substracts how far from the mean it was
     score += std::abs(loadxlane[i]-mean);
     //substracts how much it went past capacity

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <ctime> 
+#include <algorithm> 
 #include "backend.hpp"
 #include "genetica.hpp"
 

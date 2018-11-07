@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <ctime> 
 #include "backend.hpp"
 #include "genetica.hpp"
 
@@ -170,7 +172,7 @@ void Population::advance_generation(){//returns pop to be reproduced
 
 //calculates the mean fitness of the population
 double Population::mean(){
-  double mean;
+  double mean =  0;
   for(int i=0; i<population.size(); ++i){
     mean+=population[i].getFitness();
   }

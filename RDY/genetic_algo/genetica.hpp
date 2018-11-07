@@ -1,6 +1,12 @@
 #ifndef GENETICA_H
 #define GENETICA_H
 
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+#include <random>
 #include "backend.hpp"
 
 //to write files after distributing

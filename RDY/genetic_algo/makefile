@@ -22,4 +22,4 @@ clean:
 
 #o corran lo siguiente en la terminal lol:
 #g++ genetica.cpp backend.cpp main.cpp -o rtv
-
+# agregar esto en windows: -static-libstdc++ -static-libgcc
